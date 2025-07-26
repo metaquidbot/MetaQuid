@@ -973,3 +973,48 @@ ${signalsText}
     </script>
 </body>
 </html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MetaQuid Mini App</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 40px;
+    }
+    .card {
+      background: #f1f1f1;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <div id="app" class="card">⏳ Loading...</div>
+
+  <script>
+    const tg = window.Telegram.WebApp;
+    const user = tg.initDataUnsafe.user;
+
+    // Premium ইউজারদের ID লিস্ট
+    const premiumUserIds = [8134066638];
+
+    if (user && premiumUserIds.includes(user.id)) {
+      document.getElementById("app").innerHTML = `
+        <h2>👑 Welcome, Premium User!</h2>
+        <p>You now have full access to MetaQuid Auto Trading tools.</p>
+      `;
+    } else {
+      document.getElementById("app").innerHTML = `
+        <h2>❌ You are not a Premium User</h2>
+        <p>Please contact us to buy premium access.</p>
+      `;
+    }
+  </script>
+</body>
+</html>
