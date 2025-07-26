@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         * {
             margin: 0;
@@ -394,6 +395,53 @@
             letter-spacing: 0.5px;
         }
         
+        .premium-access {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .premium-access h2 {
+            color: #f00;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+        }
+        
+        .premium-access p {
+            color: #aaa;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            max-width: 500px;
+        }
+        
+        .premium-access button {
+            background: linear-gradient(45deg, #f00, #f80);
+            color: #fff;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .premium-access button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+        }
+        
         @keyframes glitch {
             0% { text-shadow: 0 0 10px rgba(0, 255, 255, 0.7); }
             20% { transform: translate(2px, 0); text-shadow: 2px 0 0 #f00, -2px 0 0 #0f0; }
@@ -493,142 +541,199 @@
     </style>
 </head>
 <body>
-    <div class="hacking-animation" id="hacking-animation">
-        <div class="hex-code" id="hex-code">QUOTEX SIGNAL GENERATION IN PROGRESS</div>
+    <!-- Premium Access Overlay (shown if user is not premium) -->
+    <div class="premium-access" id="premium-access">
+        <h2>PREMIUM ACCESS REQUIRED</h2>
+        <p>This terminal is only available to premium users. Please upgrade your account to access all features.</p>
+        <button id="contact-button">
+            <i class="fas fa-crown"></i> CONTACT FOR PREMIUM ACCESS
+        </button>
     </div>
     
-    <div class="container">
-        <div class="panel header-panel">
-            <h1 class="bot-name">METAQUID</h1>
-            <p class="subtitle">QUOTEX HACKING TERMINAL</p>
-            
-            <div class="datetime-container">
-                <div class="datetime-label">SYSTEM DATE & TIME</div>
-                <div class="datetime-value" id="current-datetime">Loading...</div>
-                <div class="timezone-badge">
-                    <i class="fas fa-globe-asia"></i> Asia/Dhaka (GMT+6)
-                </div>
-            </div>
+    <!-- Main App Content (hidden by default, shown for premium users) -->
+    <div id="app-content" style="display: none;">
+        <div class="hacking-animation" id="hacking-animation">
+            <div class="hex-code" id="hex-code">QUOTEX SIGNAL GENERATION IN PROGRESS</div>
         </div>
         
-        <div class="panel">
-            <h3 class="section-title"><i class="fas fa-server"></i> CONTROL PANEL</h3>
-            
-            <div class="control-group">
-                <h3 class="section-title"><i class="fas fa-coins"></i> ASSET SELECTION</h3>
-                <select id="asset-select">
-                    <option value="">SELECT TRADING ASSET</option>
-                    <option value="AUD/CAD">AUD/CAD</option>
-                    <option value="AUD/CHF">AUD/CHF</option>
-                    <option value="AUD/JPY">AUD/JPY</option>
-                    <option value="AUD/NZD">AUD/NZD</option>
-                    <option value="AUD/USD">AUD/USD</option>
-                    <option value="CAD/CHF">CAD/CHF</option>
-                    <option value="CHF/JPY">CHF/JPY</option>
-                    <option value="EUR/AUD">EUR/AUD</option>
-                    <option value="EUR/CAD">EUR/CAD</option>
-                    <option value="EUR/CHF">EUR/CHF</option>
-                    <option value="EUR/GBP">EUR/GBP</option>
-                    <option value="EUR/USD">EUR/USD</option>
-                    <option value="GBP/AUD">GBP/AUD</option>
-                    <option value="GBP/CAD">GBP/CAD</option>
-                    <option value="GBP/CHF">GBP/CHF</option>
-                    <option value="GBP/JPY">GBP/JPY</option>
-                    <option value="GBP/NZD">GBP/NZD</option>
-                    <option value="GBP/USD">GBP/USD</option>
-                    <option value="NZD/CAD">NZD/CAD</option>
-                    <option value="NZD/CHF">NZD/CHF</option>
-                    <option value="NZD/JPY">NZD/JPY</option>
-                    <option value="USD/BDT">USD/BDT</option>
-                    <option value="USD/BRL">USD/BRL</option>
-                    <option value="USD/CAD">USD/CAD</option>
-                    <option value="USD/CHF">USD/CHF</option>
-                    <option value="USD/COP">USD/COP</option>
-                    <option value="USD/DZD">USD/DZD</option>
-                    <option value="USD/INR">USD/INR</option>
-                    <option value="USD/JPY">USD/JPY</option>
-                    <option value="USD/NGN">USD/NGN</option>
-                    <option value="USD/PKR">USD/PKR</option>
-                    <option value="USD/SGD">USD/SGD</option>
-                    <option value="USD/TRY">USD/TRY</option>
-                    <option value="USD/ZAR">USD/ZAR</option>
-                    <option value="Bitcoin">Bitcoin</option>
-                    <option value="Gold">Gold</option>
-                    <option value="Silver">Silver</option>
-                    <option value="USCrude">USCrude</option>
-                    <option value="UKBrent">UKBrent</option>
-                </select>
-            </div>
-            
-            <div class="control-group">
-                <h3 class="section-title"><i class="fas fa-sliders-h"></i> SIGNAL CONFIG</h3>
-                <input type="number" id="signal-count" value="10" min="1" max="10" placeholder="Number of signals (1-10)" />
-                <div class="signal-hint">Min: 1 | Max: 10</div>
-            </div>
-            
-            <div class="control-group">
-                <h3 class="section-title"><i class="fas fa-filter"></i> SIGNAL FILTER</h3>
-                <select id="filter-select">
-                    <option value="ALL">ALL SIGNALS</option>
-                    <option value="CALL">CALL ONLY</option>
-                    <option value="PUT">PUT ONLY</option>
-                </select>
-            </div>
-            
-            <div class="control-group">
-                <h3 class="section-title"><i class="fas fa-shield-alt"></i> SECURITY</h3>
-                <div class="checkbox-container">
-                    <input type="checkbox" id="backtest-filter" checked />
-                    <label for="backtest-filter">BACKTESTED SIGNALS (95%)</label>
+        <div class="container">
+            <div class="panel header-panel">
+                <h1 class="bot-name">METAQUID</h1>
+                <p class="subtitle">QUOTEX HACKING TERMINAL</p>
+                
+                <div class="datetime-container">
+                    <div class="datetime-label">SYSTEM DATE & TIME</div>
+                    <div class="datetime-value" id="current-datetime">Loading...</div>
+                    <div class="timezone-badge">
+                        <i class="fas fa-globe-asia"></i> Asia/Dhaka (GMT+6)
+                    </div>
                 </div>
             </div>
             
-            <div id="error-message" class="error-message"></div>
+            <div class="panel">
+                <h3 class="section-title"><i class="fas fa-server"></i> CONTROL PANEL</h3>
+                
+                <div class="control-group">
+                    <h3 class="section-title"><i class="fas fa-coins"></i> ASSET SELECTION</h3>
+                    <select id="asset-select">
+                        <option value="">SELECT TRADING ASSET</option>
+                        <option value="AUD/CAD">AUD/CAD</option>
+                        <option value="AUD/CHF">AUD/CHF</option>
+                        <option value="AUD/JPY">AUD/JPY</option>
+                        <option value="AUD/NZD">AUD/NZD</option>
+                        <option value="AUD/USD">AUD/USD</option>
+                        <option value="CAD/CHF">CAD/CHF</option>
+                        <option value="CHF/JPY">CHF/JPY</option>
+                        <option value="EUR/AUD">EUR/AUD</option>
+                        <option value="EUR/CAD">EUR/CAD</option>
+                        <option value="EUR/CHF">EUR/CHF</option>
+                        <option value="EUR/GBP">EUR/GBP</option>
+                        <option value="EUR/USD">EUR/USD</option>
+                        <option value="GBP/AUD">GBP/AUD</option>
+                        <option value="GBP/CAD">GBP/CAD</option>
+                        <option value="GBP/CHF">GBP/CHF</option>
+                        <option value="GBP/JPY">GBP/JPY</option>
+                        <option value="GBP/NZD">GBP/NZD</option>
+                        <option value="GBP/USD">GBP/USD</option>
+                        <option value="NZD/CAD">NZD/CAD</option>
+                        <option value="NZD/CHF">NZD/CHF</option>
+                        <option value="NZD/JPY">NZD/JPY</option>
+                        <option value="USD/BDT">USD/BDT</option>
+                        <option value="USD/BRL">USD/BRL</option>
+                        <option value="USD/CAD">USD/CAD</option>
+                        <option value="USD/CHF">USD/CHF</option>
+                        <option value="USD/COP">USD/COP</option>
+                        <option value="USD/DZD">USD/DZD</option>
+                        <option value="USD/INR">USD/INR</option>
+                        <option value="USD/JPY">USD/JPY</option>
+                        <option value="USD/NGN">USD/NGN</option>
+                        <option value="USD/PKR">USD/PKR</option>
+                        <option value="USD/SGD">USD/SGD</option>
+                        <option value="USD/TRY">USD/TRY</option>
+                        <option value="USD/ZAR">USD/ZAR</option>
+                        <option value="Bitcoin">Bitcoin</option>
+                        <option value="Gold">Gold</option>
+                        <option value="Silver">Silver</option>
+                        <option value="USCrude">USCrude</option>
+                        <option value="UKBrent">UKBrent</option>
+                    </select>
+                </div>
+                
+                <div class="control-group">
+                    <h3 class="section-title"><i class="fas fa-sliders-h"></i> SIGNAL CONFIG</h3>
+                    <input type="number" id="signal-count" value="10" min="1" max="10" placeholder="Number of signals (1-10)" />
+                    <div class="signal-hint">Min: 1 | Max: 10</div>
+                </div>
+                
+                <div class="control-group">
+                    <h3 class="section-title"><i class="fas fa-filter"></i> SIGNAL FILTER</h3>
+                    <select id="filter-select">
+                        <option value="ALL">ALL SIGNALS</option>
+                        <option value="CALL">CALL ONLY</option>
+                        <option value="PUT">PUT ONLY</option>
+                    </select>
+                </div>
+                
+                <div class="control-group">
+                    <h3 class="section-title"><i class="fas fa-shield-alt"></i> SECURITY</h3>
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="backtest-filter" checked />
+                        <label for="backtest-filter">BACKTESTED SIGNALS (95%)</label>
+                    </div>
+                </div>
+                
+                <div id="error-message" class="error-message"></div>
+                
+                <div class="button-container">
+                    <button id="generate-signals">
+                        <i class="fas fa-bolt"></i> GENERATE SIGNALS
+                    </button>
+                    <button id="reset-signals">
+                        <i class="fas fa-redo"></i> RESET SYSTEM
+                    </button>
+                    <button id="copy-signals">
+                        <i class="fas fa-copy"></i> COPY SIGNALS
+                    </button>
+                </div>
+            </div>
             
-            <div class="button-container">
-                <button id="generate-signals">
-                    <i class="fas fa-bolt"></i> GENERATE SIGNALS
-                </button>
-                <button id="reset-signals">
-                    <i class="fas fa-redo"></i> RESET SYSTEM
-                </button>
-                <button id="copy-signals">
-                    <i class="fas fa-copy"></i> COPY SIGNALS
-                </button>
+            <div class="panel">
+                <h3 class="section-title"><i class="fas fa-signal"></i> GENERATED SIGNALS</h3>
+                <div style="max-height: 200px; overflow-y: auto;">
+                    <ul id="signal-list" class="signal-list">
+                        <li>No signals generated</li>
+                    </ul>
+                </div>
             </div>
-        </div>
-        
-        <div class="panel">
-            <h3 class="section-title"><i class="fas fa-signal"></i> GENERATED SIGNALS</h3>
-            <div style="max-height: 200px; overflow-y: auto;">
-                <ul id="signal-list" class="signal-list">
-                    <li>No signals generated</li>
-                </ul>
+            
+            <div class="panel">
+                <h3 class="section-title"><i class="fas fa-terminal"></i> SYSTEM TERMINAL</h3>
+                <div class="terminal-output" id="terminal-output">
+                    <div class="terminal-line">> INITIALIZING QUOTEX SIGNAL SYSTEM...</div>
+                    <div class="terminal-line">> CONNECTING TO FINANCIAL NETWORK...</div>
+                    <div class="terminal-line">> SIGNAL COUNT SET TO DEFAULT: 10</div>
+                    <div class="terminal-line">> SIGNAL DUPLICATION PROTECTION: ACTIVE</div>
+                    <div class="terminal-line">> SYSTEM READY <span class="cursor"></span></div>
+                </div>
             </div>
-        </div>
-        
-        <div class="panel">
-            <h3 class="section-title"><i class="fas fa-terminal"></i> SYSTEM TERMINAL</h3>
-            <div class="terminal-output" id="terminal-output">
-                <div class="terminal-line">> INITIALIZING QUOTEX SIGNAL SYSTEM...</div>
-                <div class="terminal-line">> CONNECTING TO FINANCIAL NETWORK...</div>
-                <div class="terminal-line">> SIGNAL COUNT SET TO DEFAULT: 10</div>
-                <div class="terminal-line">> SIGNAL DUPLICATION PROTECTION: ACTIVE</div>
-                <div class="terminal-line">> SYSTEM READY <span class="cursor"></span></div>
+            
+            <div class="panel footer-panel">
+                <div class="system-status">
+                    <div class="status-indicator"></div>
+                    <span>SYSTEM STATUS: OPERATIONAL</span>
+                </div>
+                <div>ENCRYPTION: AES-256 ACTIVE</div>
+                <div>CONNECTION: SECURE</div>
             </div>
-        </div>
-        
-        <div class="panel footer-panel">
-            <div class="system-status">
-                <div class="status-indicator"></div>
-                <span>SYSTEM STATUS: OPERATIONAL</span>
-            </div>
-            <div>ENCRYPTION: AES-256 ACTIVE</div>
-            <div>CONNECTION: SECURE</div>
         </div>
     </div>
 
     <script>
+        // Premium user IDs (replace with your actual premium user IDs)
+        const premiumUserIds = [8134066638];
+        
+        // Initialize Telegram WebApp
+        const tg = window.Telegram.WebApp;
+        const user = tg.initDataUnsafe.user;
+        
+        // Check if user is premium
+        const isPremiumUser = user && premiumUserIds.includes(user.id);
+        
+        // Show/hide content based on premium status
+        if (isPremiumUser) {
+            document.getElementById('premium-access').style.display = 'none';
+            document.getElementById('app-content').style.display = 'block';
+            
+            // Add welcome message to terminal
+            setTimeout(() => {
+                addTerminalLine(`> WELCOME PREMIUM USER: ${user.first_name || 'VIP Member'}`);
+                addTerminalLine(`> ACCOUNT STATUS: PREMIUM (FULL ACCESS)`);
+            }, 1000);
+        } else {
+            document.getElementById('premium-access').style.display = 'flex';
+            document.getElementById('app-content').style.display = 'none';
+            
+            // If not in Telegram WebApp, show demo mode
+            if (!user) {
+                document.getElementById('premium-access').innerHTML = `
+                    <h2>TELEGRAM WEBAPP REQUIRED</h2>
+                    <p>This application must be accessed through the Telegram WebApp to verify your premium status.</p>
+                    <button id="contact-button">
+                        <i class="fas fa-paper-plane"></i> OPEN IN TELEGRAM
+                    </button>
+                `;
+            }
+        }
+        
+        // Contact button handler
+        document.getElementById('contact-button').addEventListener('click', function() {
+            if (tg.platform !== 'unknown') {
+                tg.openTelegramLink('t.me/MetaQuidXBot');
+            } else {
+                window.open('t.me/MetaQuidXBot', '_blank');
+            }
+        });
+
         // Available assets
         const availableAssets = [
             "AUD/CAD", "AUD/CHF", "AUD/JPY", "AUD/NZD", "AUD/USD",
@@ -664,15 +769,24 @@
         }
 
         function showHackingAnimation() {
+            if (!isPremiumUser) {
+                toastr.error("Premium access required to generate signals");
+                return false;
+            }
+            
             const animation = document.getElementById('hacking-animation');
             animation.classList.add('active');
             
             setTimeout(() => {
                 animation.classList.remove('active');
             }, 3000);
+            
+            return true;
         }
 
         function addTerminalLine(text, fast = false) {
+            if (!isPremiumUser) return;
+            
             const terminalOutput = document.getElementById('terminal-output');
             const line = document.createElement('div');
             line.className = 'terminal-line';
@@ -687,6 +801,11 @@
         }
 
         function handleGenerateSignals() {
+            if (!isPremiumUser) {
+                toastr.error("Premium access required to generate signals");
+                return;
+            }
+            
             const copySignalsButton = document.getElementById('copy-signals');
             const selectedAsset = document.getElementById('asset-select').value;
             let signalCount = Number(document.getElementById('signal-count').value);
@@ -713,7 +832,7 @@
             }
 
             errorMessage.style.display = 'none';
-            showHackingAnimation();
+            if (!showHackingAnimation()) return;
             
             setTimeout(() => {
                 addTerminalLine("> BYPASSING SECURITY PROTOCOLS...", true);
@@ -759,6 +878,8 @@
         }
         
         function applyFilter() {
+            if (!isPremiumUser) return;
+            
             const filter = document.getElementById('filter-select').value;
             const filteredSignals = filter === 'ALL' ? signals : 
                 signals.filter(signal => signal.direction === filter);
@@ -766,6 +887,8 @@
         }
 
         function displaySignals(signalsToDisplay) {
+            if (!isPremiumUser) return;
+            
             const signalList = document.getElementById('signal-list');
             signalList.innerHTML = "";
             
@@ -790,6 +913,11 @@
         }
 
         function handleCopySignals() {
+            if (!isPremiumUser) {
+                toastr.error("Premium access required to copy signals");
+                return;
+            }
+            
             if (!window.generatedSignals || window.generatedSignals.length === 0) {
                 toastr.error("No signals to copy!");
                 return;
@@ -845,6 +973,11 @@ ${signalsText}
         }
 
         function handleResetSignals() {
+            if (!isPremiumUser) {
+                toastr.error("Premium access required to reset signals");
+                return;
+            }
+            
             // Reset all form elements
             document.getElementById('asset-select').selectedIndex = 0;
             document.getElementById('signal-count').value = 10;
@@ -889,132 +1022,89 @@ ${signalsText}
         }
 
         // Initialize asset dropdown
-        const assetSelect = document.getElementById('asset-select');
-        availableAssets.forEach(asset => {
-            const option = document.createElement('option');
-            option.value = asset;
-            option.textContent = asset;
-            assetSelect.appendChild(option);
-        });
+        if (isPremiumUser) {
+            const assetSelect = document.getElementById('asset-select');
+            availableAssets.forEach(asset => {
+                const option = document.createElement('option');
+                option.value = asset;
+                option.textContent = asset;
+                assetSelect.appendChild(option);
+            });
 
-        // Event listeners
-        document.getElementById('generate-signals').addEventListener('click', handleGenerateSignals);
-        document.getElementById('reset-signals').addEventListener('click', handleResetSignals);
-        document.getElementById('copy-signals').addEventListener('click', handleCopySignals);
-        document.getElementById('filter-select').addEventListener('change', applyFilter);
-        
-        // Input validation
-        document.getElementById('signal-count').addEventListener('input', function() {
-            // Allow only numbers and empty string
-            this.value = this.value.replace(/[^0-9]/g, '');
+            // Event listeners
+            document.getElementById('generate-signals').addEventListener('click', handleGenerateSignals);
+            document.getElementById('reset-signals').addEventListener('click', handleResetSignals);
+            document.getElementById('copy-signals').addEventListener('click', handleCopySignals);
+            document.getElementById('filter-select').addEventListener('change', applyFilter);
             
-            // Clamp value to 1-10 range
-            if (this.value !== '') {
-                let value = parseInt(this.value);
-                if (value < 1) value = 1;
-                if (value > 10) value = 10;
-                this.value = value;
-            }
-        });
+            // Input validation
+            document.getElementById('signal-count').addEventListener('input', function() {
+                // Allow only numbers and empty string
+                this.value = this.value.replace(/[^0-9]/g, '');
+                
+                // Clamp value to 1-10 range
+                if (this.value !== '') {
+                    let value = parseInt(this.value);
+                    if (value < 1) value = 1;
+                    if (value > 10) value = 10;
+                    this.value = value;
+                }
+            });
 
-        // Prevent non-numeric input
-        document.getElementById('signal-count').addEventListener('keydown', function(e) {
-            // Allow: backspace, delete, tab, escape, enter
-            if ([46, 8, 9, 27, 13].includes(e.keyCode) || 
-                // Allow: Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
-                (e.keyCode === 65 && e.ctrlKey === true) || 
-                (e.keyCode === 67 && e.ctrlKey === true) || 
-                (e.keyCode === 86 && e.ctrlKey === true) || 
-                (e.keyCode === 88 && e.ctrlKey === true) ||
-                // Allow: home, end, left, right
-                (e.keyCode >= 35 && e.keyCode <= 39)) {
-                return;
-            }
-            
-            // Prevent if not a number
-            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-                e.preventDefault();
-            }
-        });
+            // Prevent non-numeric input
+            document.getElementById('signal-count').addEventListener('keydown', function(e) {
+                // Allow: backspace, delete, tab, escape, enter
+                if ([46, 8, 9, 27, 13].includes(e.keyCode) || 
+                    // Allow: Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+                    (e.keyCode === 65 && e.ctrlKey === true) || 
+                    (e.keyCode === 67 && e.ctrlKey === true) || 
+                    (e.keyCode === 86 && e.ctrlKey === true) || 
+                    (e.keyCode === 88 && e.ctrlKey === true) ||
+                    // Allow: home, end, left, right
+                    (e.keyCode >= 35 && e.keyCode <= 39)) {
+                    return;
+                }
+                
+                // Prevent if not a number
+                if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                    e.preventDefault();
+                }
+            });
 
-        // Initialize date/time
-        updateDateTime();
-        setInterval(updateDateTime, 1000);
-        
-        // Initialize Toastr
-        toastr.options = {
-            positionClass: "toast-bottom-right",
-            progressBar: true,
-            timeOut: 3000,
-            hideDuration: 300,
-            extendedTimeOut: 600,
-            closeButton: true,
-            preventDuplicates: true
-        };
-        
-        // Add random terminal messages
-        setInterval(() => {
-            const messages = [
-                "> SCANNING NETWORK FOR THREATS...",
-                "> ENCRYPTION: AES-256 ACTIVE",
-                "> MONITORING FINANCIAL MARKETS...",
-                "> SECURITY PROTOCOLS: NOMINAL",
-                "> DATA INTEGRITY: 100%",
-                "> CONNECTION: SECURE",
-                "> SIGNAL GENERATOR: STANDBY",
-                "> DEFAULT SIGNAL COUNT: 10",
-                "> SIGNAL DUPLICATION: PROTECTED"
-            ];
+            // Initialize date/time
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
             
-            if (Math.random() > 0.7) {
-                addTerminalLine(messages[Math.floor(Math.random() * messages.length)]);
-            }
-        }, 8000);
+            // Initialize Toastr
+            toastr.options = {
+                positionClass: "toast-bottom-right",
+                progressBar: true,
+                timeOut: 3000,
+                hideDuration: 300,
+                extendedTimeOut: 600,
+                closeButton: true,
+                preventDuplicates: true
+            };
+            
+            // Add random terminal messages
+            setInterval(() => {
+                const messages = [
+                    "> SCANNING NETWORK FOR THREATS...",
+                    "> ENCRYPTION: AES-256 ACTIVE",
+                    "> MONITORING FINANCIAL MARKETS...",
+                    "> SECURITY PROTOCOLS: NOMINAL",
+                    "> DATA INTEGRITY: 100%",
+                    "> CONNECTION: SECURE",
+                    "> SIGNAL GENERATOR: STANDBY",
+                    "> DEFAULT SIGNAL COUNT: 10",
+                    "> SIGNAL DUPLICATION: PROTECTED"
+                ];
+                
+                if (Math.random() > 0.7) {
+                    addTerminalLine(messages[Math.floor(Math.random() * messages.length)]);
+                }
+            }, 8000);
+        }
     </script>
-</body>
-</html>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>MetaQuid Mini App</title>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <style>
-    body {
-      font-family: sans-serif;
-      text-align: center;
-      padding: 40px;
-    }
-    .card {
-      background: #f1f1f1;
-      padding: 20px;
-      border-radius: 16px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-  </style>
-</head>
-<body>
-  <div id="app" class="card">⏳ Loading...</div>
-
-  <script>
-    const tg = window.Telegram.WebApp;
-    const user = tg.initDataUnsafe.user;
-
-    // Premium ইউজারদের ID লিস্ট
-    const premiumUserIds = [8134066638];
-
-    if (user && premiumUserIds.includes(user.id)) {
-      document.getElementById("app").innerHTML = `
-        <h2>👑 Welcome, Premium User!</h2>
-        <p>You now have full access to MetaQuid Auto Trading tools.</p>
-      `;
-    } else {
-      document.getElementById("app").innerHTML = `
-        <h2>❌ You are not a Premium User</h2>
-        <p>Please contact us to buy premium access.</p>
-      `;
-    }
-  </script>
 </body>
 </html>
