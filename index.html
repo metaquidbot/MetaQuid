@@ -708,7 +708,7 @@
                     <div class="terminal-line">> CONNECTING TO FINANCIAL NETWORK...</div>
                     <div class="terminal-line">> SIGNAL COUNT SET TO DEFAULT: 10</div>
                     <div class="terminal-line">> SIGNAL DUPLICATION PROTECTION: ACTIVE</div>
-                    <div class="terminal-line">> SYSTEM READY <span class="cursor"></span></div>
+                    <div class="terminal-line">> SYSTEM READY</div>
                 </div>
             </div>
             
@@ -821,6 +821,24 @@
             return true;
         }
 
+        // Helper function to update the cursor position
+        function updateCursor() {
+            const terminalOutput = document.getElementById('terminal-output');
+            const lines = terminalOutput.querySelectorAll('.terminal-line');
+            
+            // Remove existing cursors
+            const existingCursors = terminalOutput.querySelectorAll('.cursor');
+            existingCursors.forEach(cursor => cursor.remove());
+            
+            // Add cursor to the last line
+            if (lines.length > 0) {
+                const lastLine = lines[lines.length - 1];
+                const cursor = document.createElement('span');
+                cursor.className = 'cursor';
+                lastLine.appendChild(cursor);
+            }
+        }
+
         function addTerminalLine(text, fast = false) {
             if (!isPremiumUser) return;
             
@@ -830,6 +848,11 @@
             if (fast) line.classList.add('fast-scroll');
             line.textContent = text;
             terminalOutput.appendChild(line);
+            
+            // Update the cursor position
+            updateCursor();
+            
+            // Scroll to bottom
             terminalOutput.scrollTop = terminalOutput.scrollHeight;
         }
 
@@ -1035,8 +1058,11 @@ ${signalsText}
                 <div class="terminal-line">> RESETTING DATA VISUALIZATION...</div>
                 <div class="terminal-line">> SIGNAL COUNT SET TO DEFAULT: 10</div>
                 <div class="terminal-line">> SYSTEM RESET COMPLETE</div>
-                <div class="terminal-line">> READY FOR NEW OPERATION <span class="cursor"></span></div>
+                <div class="terminal-line">> READY FOR NEW OPERATION</div>
             `;
+            
+            // Update cursor position after reset
+            updateCursor();
         }
 
         // Set Dhaka timezone
@@ -1111,6 +1137,11 @@ ${signalsText}
             // Initialize date/time
             updateDateTime();
             setInterval(updateDateTime, 1000);
+            
+            // Initialize cursor position
+            setTimeout(() => {
+                updateCursor();
+            }, 100);
             
             // Initialize Toastr
             toastr.options = {
