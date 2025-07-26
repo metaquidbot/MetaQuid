@@ -8,6 +8,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <meta property="og:url" content="https://t.me/MetaQuidXBot">
     <style>
         * {
             margin: 0;
@@ -426,22 +427,37 @@
             max-width: 500px;
         }
         
-        .premium-access button {
-            background: linear-gradient(45deg, #f00, #f80);
-            color: #fff;
-            padding: 12px 30px;
-            border: none;
+        .contact-options {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+            max-width: 300px;
+        }
+        
+        .contact-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px;
+            background: rgba(0, 30, 60, 0.5);
             border-radius: 5px;
-            font-size: 1.1rem;
-            cursor: pointer;
+            color: #0af;
+            text-decoration: none;
             transition: all 0.3s;
         }
         
-        .premium-access button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+        .contact-link:hover {
+            background: rgba(0, 60, 120, 0.7);
+            transform: translateY(-2px);
         }
         
+        .contact-link i {
+            font-size: 1.2rem;
+        }
+
         @keyframes glitch {
             0% { text-shadow: 0 0 10px rgba(0, 255, 255, 0.7); }
             20% { transform: translate(2px, 0); text-shadow: 2px 0 0 #f00, -2px 0 0 #0f0; }
@@ -541,13 +557,32 @@
     </style>
 </head>
 <body>
+    <!-- ============================================== -->
+    <!-- EDIT PREMIUM USER IDs HERE -->
+    <!-- Add/remove user IDs as needed -->
+    <script>
+        // Premium user IDs (replace with your actual premium user IDs)
+        const premiumUserIds = [8134066638];
+        
+        // Telegram links
+        const telegramBotLink = "https://t.me/MetaQuidXBot";
+        const adminContactLink = "https://t.me/sakibalhasannaim";
+    </script>
+    <!-- ============================================== -->
+
     <!-- Premium Access Overlay (shown if user is not premium) -->
     <div class="premium-access" id="premium-access">
         <h2>PREMIUM ACCESS REQUIRED</h2>
-        <p>This terminal is only available to premium users. Please upgrade your account to access all features.</p>
-        <button id="contact-button">
-            <i class="fas fa-crown"></i> CONTACT FOR PREMIUM ACCESS
-        </button>
+        <p>This terminal is only available to premium users. Please contact us to upgrade your account.</p>
+        
+        <div class="contact-options">
+            <a href="https://t.me/MetaQuidXBot" class="contact-link">
+                <i class="fab fa-telegram"></i> MetaQuid Bot
+            </a>
+            <a href="https://t.me/sakibalhasannaim" class="contact-link">
+                <i class="fab fa-telegram"></i> Contact Admin
+            </a>
+        </div>
     </div>
     
     <!-- Main App Content (hidden by default, shown for premium users) -->
@@ -689,9 +724,6 @@
     </div>
 
     <script>
-        // Premium user IDs (replace with your actual premium user IDs)
-        const premiumUserIds = [8134066638];
-        
         // Initialize Telegram WebApp
         const tg = window.Telegram.WebApp;
         const user = tg.initDataUnsafe.user;
@@ -717,20 +749,25 @@
             if (!user) {
                 document.getElementById('premium-access').innerHTML = `
                     <h2>TELEGRAM WEBAPP REQUIRED</h2>
-                    <p>This application must be accessed through the Telegram WebApp to verify your premium status.</p>
-                    <button id="contact-button">
-                        <i class="fas fa-paper-plane"></i> OPEN IN TELEGRAM
-                    </button>
+                    <p>This application must be accessed through our Telegram bot to verify your premium status.</p>
+                    <div class="contact-options">
+                        <a href="${telegramBotLink}" class="contact-link">
+                            <i class="fab fa-telegram"></i> MetaQuid Bot
+                        </a>
+                        <a href="${adminContactLink}" class="contact-link">
+                            <i class="fab fa-telegram"></i> Contact Admin
+                        </a>
+                    </div>
                 `;
             }
         }
         
         // Contact button handler
-        document.getElementById('contact-button').addEventListener('click', function() {
+        document.getElementById('contact-button')?.addEventListener('click', function() {
             if (tg.platform !== 'unknown') {
-                tg.openTelegramLink('t.me/MetaQuidXBot');
+                tg.openTelegramLink(telegramBotLink);
             } else {
-                window.open('t.me/MetaQuidXBot', '_blank');
+                window.open(telegramBotLink, '_blank');
             }
         });
 
