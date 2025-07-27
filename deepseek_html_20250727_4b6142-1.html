@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quotex Hacking Terminal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <meta property="og:url" content="https://t.me/MetaQuidXBot">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        
+        body {
+            background: #0a0a14;
+            color: #0af;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(10, 80, 150, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(100, 0, 150, 0.1) 0%, transparent 20%),
+                linear-gradient(to bottom, #0a0a14, #000);
+            padding: 15px;
+        }
+        
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .panel {
+            background: rgba(10, 15, 30, 0.85);
+            border: 1px solid #0af;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 170, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+            padding: 15px;
+        }
+        
+        .header-panel {
+            text-align: center;
+            padding: 15px 0;
+        }
+        
+        .bot-name {
+            font-size: 2.2rem;
+            color: #0ff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+            margin-bottom: 5px;
+            animation: glitch 2s infinite;
+            position: relative;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            color: #a0f;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            font-weight: bold;
+            text-shadow: 0 0 8px rgba(160, 0, 255, 0.7);
+        }
+        
+        .section-title {
+            font-size: 1rem;
+            color: #0ff;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title i {
+            margin-right: 8px;
+            color: #a0f;
+            font-size: 0.9rem;
+        }
+        
+        select, input {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            background: rgba(0, 10, 30, 0.8);
+            border: 1px solid #0af;
+            border-radius: 5px;
+            color: #0ff;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        
+        select:focus, input:focus {
+            outline: none;
+            border-color: #f0f;
+            box-shadow: 0 0 8px rgba(255, 0, 255, 0.5);
+        }
+        
+        .control-group {
+            margin-bottom: 15px;
+        }
+        
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            padding: 8px;
+            background: rgba(0, 20, 40, 0.4);
+            border-radius: 5px;
+        }
+        
+        .checkbox-container input {
+            width: auto;
+            margin-right: 8px;
+            transform: scale(1.2);
+        }
+        
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 15px 0;
+        }
+        
+        button {
+            padding: 12px 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex: 1;
+            min-width: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: 0.5s;
+        }
+        
+        button:hover::before {
+            left: 100%;
+        }
+        
+        #generate-signals {
+            background: linear-gradient(45deg, #0a0, #0f0);
+            color: #001a00;
+        }
+        
+        #reset-signals {
+            background: linear-gradient(45deg, #a00, #f00);
+            color: #fff;
+        }
+        
+        #copy-signals {
+            background: linear-gradient(45deg, #00a, #00f);
+            color: #fff;
+            display: none;
+        }
+        
+        .signal-list {
+            list-style-type: none;
+            margin-top: 10px;
+        }
+        
+        .signal-list li {
+            padding: 12px;
+            margin: 8px 0;
+            background: rgba(0, 30, 60, 0.5);
+            border-radius: 5px;
+            border-left: 4px solid #0f0;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .signal-list li:hover {
+            background: rgba(0, 40, 80, 0.7);
+        }
+        
+        .signal-list li::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.1), transparent);
+            animation: signalGlow 2s infinite;
+        }
+        
+        .signal-direction {
+            margin-left: auto;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+        
+        .call {
+            background: rgba(0, 255, 0, 0.15);
+            color: #0f0;
+            border: 1px solid #0f0;
+        }
+        
+        .put {
+            background: rgba(255, 0, 0, 0.15);
+            color: #f00;
+            border: 1px solid #f00;
+        }
+        
+        .terminal-output {
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #0af;
+            padding: 12px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            min-height: 150px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .terminal-line {
+            color: #0f0;
+            margin-bottom: 4px;
+            white-space: pre-wrap;
+            line-height: 1.4;
+            font-size: 0.85rem;
+        }
+        
+        .terminal-line.fast-scroll {
+            animation: fastScroll 0.5s linear;
+        }
+        
+        .cursor {
+            display: inline-block;
+            width: 6px;
+            height: 14px;
+            background: #0f0;
+            margin-left: 4px;
+            animation: blink 1s infinite;
+        }
+        
+        .footer-panel {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: rgba(0, 20, 40, 0.6);
+            border-radius: 5px;
+            gap: 10px;
+        }
+        
+        .system-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+        }
+        
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #0f0;
+            box-shadow: 0 0 8px #0f0;
+        }
+        
+        .hacking-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        
+        .hacking-animation.active {
+            opacity: 1;
+        }
+        
+        .hex-code {
+            font-size: 1.2rem;
+            color: #0f0;
+            text-shadow: 0 0 8px #0f0;
+            animation: glitchText 0.1s infinite;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .error-message {
+            color: #f00;
+            background: rgba(255, 0, 0, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            display: none;
+            border-left: 3px solid #f00;
+            font-size: 0.85rem;
+        }
+        
+        .datetime-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            background: rgba(0, 20, 40, 0.6);
+            border-radius: 8px;
+            border: 1px solid rgba(0, 170, 255, 0.3);
+            width: 100%;
+            max-width: 400px;
+            margin: 15px auto;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .datetime-label {
+            color: #a0a0f0;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .datetime-value {
+            color: #0f0;
+            font-weight: bold;
+            font-size: 1.3rem;
+            text-align: center;
+            padding: 10px 20px;
+            background: rgba(0, 30, 60, 0.4);
+            border-radius: 8px;
+            border: 1px solid rgba(0, 170, 255, 0.2);
+            width: 100%;
+            text-shadow: 0 0 8px rgba(0, 255, 0, 0.7);
+            animation: pulse 2s infinite;
+        }
+        
+        .timezone-badge {
+            margin-top: 10px;
+            background: rgba(0, 150, 255, 0.2);
+            border: 1px solid #0af;
+            border-radius: 20px;
+            padding: 5px 15px;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .signal-hint {
+            color: #a0a0f0;
+            font-size: 0.8rem;
+            text-align: right;
+            margin-top: 2px;
+            letter-spacing: 0.5px;
+        }
+        
+        .premium-access {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .premium-access h2 {
+            color: #f00;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+        }
+        
+        .premium-access p {
+            color: #aaa;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            max-width: 500px;
+        }
+        
+        .contact-options {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+            max-width: 300px;
+        }
+        
+        .contact-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px;
+            background: rgba(0, 30, 60, 0.5);
+            border-radius: 5px;
+            color: #0af;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .contact-link:hover {
+            background: rgba(0, 60, 120, 0.7);
+            transform: translateY(-2px);
+        }
+        
+        .contact-link i {
+            font-size: 1.2rem;
+        }
+        
+        .ai-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 150, 255, 0.2);
+            border: 1px solid #0af;
+            border-radius: 20px;
+            padding: 5px 15px;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 10;
+        }
+
+        @keyframes glitch {
+            0% { text-shadow: 0 0 10px rgba(0, 255, 255, 0.7); }
+            20% { transform: translate(2px, 0); text-shadow: 2px 0 0 #f00, -2px 0 0 #0f0; }
+            40% { transform: translate(-2px, 0); }
+            60% { transform: translate(0, 2px); text-shadow: 0 2px 0 #f00, 0 -2px 0 #0f0; }
+            80% { transform: translate(0, -2px); }
+            100% { text-shadow: 0 0 10px rgba(0, 255, 255, 0.7); }
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        
+        @keyframes fastScroll {
+            0% { transform: translateY(100%); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        
+        @keyframes signalGlow {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        @keyframes glitchText {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 255, 0, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 255, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 255, 0, 0); }
+        }
+        
+        /* Mobile optimizations */
+        @media (max-width: 480px) {
+            .bot-name {
+                font-size: 1.8rem;
+            }
+            
+            .subtitle {
+                font-size: 0.95rem;
+            }
+            
+            .datetime-value {
+                font-size: 1.1rem;
+            }
+            
+            button {
+                min-width: 100%;
+                padding: 14px;
+                font-size: 1rem;
+            }
+            
+            .button-container {
+                flex-direction: column;
+            }
+            
+            .terminal-output {
+                min-height: 120px;
+                max-height: 180px;
+            }
+            
+            .footer-panel {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+            
+            .system-status {
+                font-size: 0.8rem;
+            }
+            
+            .ai-indicator {
+                position: relative;
+                top: 0;
+                right: 0;
+                margin-top: 10px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                gap: 10px;
+            }
+            
+            .panel {
+                padding: 12px;
+            }
+            
+            .bot-name {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ============================================== -->
+    <!-- EDIT PREMIUM USER IDs HERE -->
+    <!-- Add/remove user IDs as needed -->
+    <script>
+        // Premium user IDs (replace with your actual premium user IDs)
+        const premiumUserIds = [8134066638, 5899675059, 7367613153, 7061595820];
+        
+        // Telegram links
+        const telegramBotLink = "https://t.me/MetaQuidXBot";
+        const adminContactLink = "https://t.me/sakibalhasannaim";
+    </script>
+    <!-- ============================================== -->
+
+    <!-- Premium Access Overlay (shown if user is not premium) -->
+    <div class="premium-access" id="premium-access">
+        <h2>PREMIUM ACCESS REQUIRED</h2>
+        <p>This terminal is only available to premium users. Please contact us to upgrade your account.</p>
+        
+        <div class="contact-options">
+            <a href="https://t.me/MetaQuidXBot" class="contact-link">
+                <i class="fab fa-telegram"></i> MetaQuid Bot
+            </a>
+            <a href="https://t.me/sakibalhasannaim" class="contact-link">
+                <i class="fab fa-telegram"></i> Contact Admin
+            </a>
+        </div>
+    </div>
+    
+    <!-- Main App Content (hidden by default, shown for premium users) -->
+    <div id="app-content" style="display: none;">
+        <div class="ai-indicator">
+            <i class="fas fa-brain"></i> METAQUID AI INTEGRATED
+        </div>
+        
+        <div class="hacking-animation" id="hacking-animation">
+            <div class="hex-code" id="hex-code">METAQUID AI SIGNAL GENERATION IN PROGRESS</div>
+        </div>
+        
+        <div class="container">
+            <div class="panel header-panel">
+                <h1 class="bot-name">METAQUID</h1>
+                <p class="subtitle">AI-POWERED QUOTEX SIGNAL TERMINAL</p>
+                
+                <div class="datetime-container">
+                    <div class="datetime-label">SYSTEM DATE & TIME</div>
+                    <div class="datetime-value" id="current-datetime">Loading...</div>
+                    <div class="timezone-badge">
+                        <i class="fas fa-globe-asia"></i> Asia/Dhaka (GMT+6)
+                    </div>
+                </div>
+            </div>
+            
+            <div class="panel">
+                <h3 class="section-title"><i class="fas fa-server"></i> CONTROL PANEL</h3>
+                
+                <div class="control-group">
+                    <h3 class="section-title"><i class="fas fa-coins"></i> ASSET SELECTION</h3>
+                    <select id="asset-select">
+                        <option value="">SELECT TRADING ASSET</option>
+                        <option value="AUD/CAD">AUD/CAD</option>
+                        <option value="AUD/CHF">AUD/CHF</option>
+                        <option value="AUD/JPY">AUD/JPY</option>
+                        <option value="AUD/NZD">AUD/NZD</option>
+                        <option value="AUD/USD">AUD/USD</option>
+                        <option value="CAD/CHF">CAD/CHF</option>
+                        <option value="CHF/JPY">CHF/JPY</option>
+                        <option value="EUR/AUD">EUR/AUD</option>
+                        <option value="EUR/CAD">EUR/CAD</option>
+                        <option value="EUR/CHF">EUR/CHF</option>
+                        <option value="EUR/GBP">EUR/GBP</option>
+                        <option value="EUR/USD">EUR/USD</option>
+                        <option value="GBP/AUD">GBP/AUD</option>
+                        <option value="GBP/CAD">GBP/CAD</option>
+                        <option value="GBP/CHF">GBP/CHF</option>
+                        <option value="GBP/JPY">GBP/JPY</option>
+                        <option value="GBP/NZD">GBP/NZD</option>
+                        <option value="GBP/USD">GBP/USD</option>
+                        <option value="NZD/CAD">NZD/CAD</option>
+                        <option value="NZD/CHF">NZD/CHF</option>
+                        <option value="NZD/JPY">NZD/JPY</option>
+                        <option value="USD/BDT">USD/BDT</option>
+                        <option value="USD/BRL">USD/BRL</option>
+                        <option value="USD/CAD">USD/CAD</option>
+                        <option value="USD/CHF">USD/CHF</option>
+                        <option value="USD/COP">USD/COP</option>
+                        <option value="USD/DZD">USD/DZD</option>
+                        <option value="USD/INR">USD/INR</option>
+                        <option value="USD/JPY">USD/JPY</option>
+                        <option value="USD/NGN">USD/NGN</option>
+                        <option value="USD/PKR">USD/PKR</option>
+                        <option value="USD/SGD">USD/SGD</option>
+                        <option value="USD/TRY">USD/TRY</option>
+                        <option value="USD/ZAR">USD/ZAR</option>
+                        <option value="Bitcoin">Bitcoin</option>
+                        <option value="Gold">Gold</option>
+                        <option value="Silver">Silver</option>
+                        <option value="USCrude">USCrude</option>
+                        <option value="UKBrent">UKBrent</option>
+                    </select>
+                </div>
+                
+                <div class="control-group">
+                    <h3 class="section-title"><i class="fas fa-sliders-h"></i> SIGNAL CONFIG</h3>
+                    <input type="number" id="signal-count" value="10" min="1" max="10" placeholder="Number of signals (1-10)" />
+                    <div class="signal-hint">Min: 1 | Max: 10</div>
+                </div>
+                
+                <div class="control-group">
+                    <h3 class="section-title"><i class="fas fa-filter"></i> SIGNAL FILTER</h3>
+                    <select id="filter-select">
+                        <option value="ALL">ALL SIGNALS</option>
+                        <option value="CALL">CALL ONLY</option>
+                        <option value="PUT">PUT ONLY</option>
+                    </select>
+                </div>
+                
+                <div class="control-group">
+                    <h3 class="section-title"><i class="fas fa-shield-alt"></i> SECURITY</h3>
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="backtest-filter" checked />
+                        <label for="backtest-filter">BACKTESTED SIGNALS (95%)</label>
+                    </div>
+                </div>
+                
+                <div id="error-message" class="error-message"></div>
+                
+                <div class="button-container">
+                    <button id="generate-signals">
+                        <i class="fas fa-bolt"></i> GENERATE SIGNALS
+                    </button>
+                    <button id="reset-signals">
+                        <i class="fas fa-redo"></i> RESET SYSTEM
+                    </button>
+                    <button id="copy-signals">
+                        <i class="fas fa-copy"></i> COPY SIGNALS
+                    </button>
+                </div>
+            </div>
+            
+            <div class="panel">
+                <h3 class="section-title"><i class="fas fa-signal"></i> GENERATED SIGNALS</h3>
+                <div style="max-height: 200px; overflow-y: auto;">
+                    <ul id="signal-list" class="signal-list">
+                        <li>No signals generated</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="panel">
+                <h3 class="section-title"><i class="fas fa-terminal"></i> SYSTEM TERMINAL</h3>
+                <div class="terminal-output" id="terminal-output">
+                    <div class="terminal-line">> INITIALIZING QUOTEX SIGNAL SYSTEM...</div>
+                    <div class="terminal-line">> CONNECTING TO FINANCIAL NETWORK...</div>
+                    <div class="terminal-line">> SIGNAL COUNT SET TO DEFAULT: 10</div>
+                    <div class="terminal-line">> METAQUID AI INTEGRATION ACTIVE</div>
+                    <div class="terminal-line">> SYSTEM READY</div>
+                </div>
+            </div>
+            
+            <div class="panel footer-panel">
+                <div class="system-status">
+                    <div class="status-indicator"></div>
+                    <span>SYSTEM STATUS: OPERATIONAL</span>
+                </div>
+                <div>ENCRYPTION: AES-256 ACTIVE</div>
+                <div>AI ENGINE: METAQUID</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Telegram WebApp
+        const tg = window.Telegram.WebApp;
+        const user = tg.initDataUnsafe.user;
+        
+        // Check if user is premium
+        const isPremiumUser = user && premiumUserIds.includes(user.id);
+        
+        // Show/hide content based on premium status
+        if (isPremiumUser) {
+            document.getElementById('premium-access').style.display = 'none';
+            document.getElementById('app-content').style.display = 'block';
+            
+            // Add welcome message to terminal
+            setTimeout(() => {
+                addTerminalLine(`> WELCOME PREMIUM USER: ${user.first_name || 'VIP Member'}`);
+                addTerminalLine(`> ACCOUNT STATUS: PREMIUM (FULL ACCESS)`);
+                addTerminalLine(`> METAQUID AI INTEGRATION: ACTIVE`);
+            }, 1000);
+        } else {
+            document.getElementById('premium-access').style.display = 'flex';
+            document.getElementById('app-content').style.display = 'none';
+            
+            // If not in Telegram WebApp, show demo mode
+            if (!user) {
+                document.getElementById('premium-access').innerHTML = `
+                    <h2>TELEGRAM WEBAPP REQUIRED</h2>
+                    <p>This application must be accessed through our Telegram bot to verify your premium status.</p>
+                    <div class="contact-options">
+                        <a href="${telegramBotLink}" class="contact-link">
+                            <i class="fab fa-telegram"></i> MetaQuid Bot
+                        </a>
+                        <a href="${adminContactLink}" class="contact-link">
+                            <i class="fab fa-telegram"></i> Contact Admin
+                        </a>
+                    </div>
+                `;
+            }
+        }
+        
+        // Contact button handler
+        document.getElementById('contact-button')?.addEventListener('click', function() {
+            if (tg.platform !== 'unknown') {
+                tg.openTelegramLink(telegramBotLink);
+            } else {
+                window.open(telegramBotLink, '_blank');
+            }
+        });
+
+        // Available assets
+        const availableAssets = [
+            "AUD/CAD", "AUD/CHF", "AUD/JPY", "AUD/NZD", "AUD/USD",
+            "CAD/CHF", "CHF/JPY", "EUR/AUD", "EUR/CAD", "EUR/CHF",
+            "EUR/GBP", "EUR/USD", "GBP/AUD", "GBP/CAD", "GBP/CHF",
+            "GBP/JPY", "GBP/NZD", "GBP/USD", "NZD/CAD", "NZD/CHF",
+            "NZD/JPY", "USD/BDT", "USD/BRL", "USD/CAD", "USD/CHF",
+            "USD/COP", "USD/DZD", "USD/INR", "USD/JPY", "USD/NGN",
+            "USD/PKR", "USD/SGD", "USD/TRY", "USD/ZAR", "Bitcoin",
+            "Gold", "Silver", "USCrude", "UKBrent"
+        ];
+
+        let signals = [];
+        let existingSignals = new Set();
+
+        function formatTime(date) {
+            return date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        // Enhanced signal generation with AI-like behavior
+        function generateAISignal(asset, time) {
+            // AI-enhanced prediction algorithm
+            const assetVolatility = {
+                "Bitcoin": 0.8,
+                "Gold": 0.4,
+                "Silver": 0.5,
+                "USCrude": 0.7,
+                "UKBrent": 0.7,
+                "AUD/USD": 0.6,
+                "EUR/USD": 0.5,
+                "GBP/USD": 0.65,
+                "USD/JPY": 0.55
+            };
+            
+            // Default volatility
+            const volatility = assetVolatility[asset] || 0.6;
+            
+            // AI-based prediction with volatility factor
+            const baseProbability = 0.7; // Base accuracy of AI predictions
+            const adjustedProbability = baseProbability * volatility;
+            const isCall = Math.random() < adjustedProbability;
+            
+            return { asset, time, direction: isCall ? 'CALL' : 'PUT' };
+        }
+
+        function generateUniqueTimes(count) {
+            const times = [];
+            let nextTime = new Date();
+            for (let i = 0; i < count; i++) {
+                nextTime.setMinutes(nextTime.getMinutes() + 5);
+                times.push(formatTime(nextTime));
+            }
+            return times;
+        }
+
+        function showHackingAnimation() {
+            if (!isPremiumUser) {
+                toastr.error("Premium access required to generate signals");
+                return false;
+            }
+            
+            const animation = document.getElementById('hacking-animation');
+            animation.classList.add('active');
+            
+            // Update hex code with AI progress
+            const hexCode = document.getElementById('hex-code');
+            const hexValues = ['>', '<', '=', '+', '-', '*', '/', '&', '#', '@', '$', '%'];
+            let counter = 0;
+            
+            const interval = setInterval(() => {
+                let hexText = '';
+                for (let i = 0; i < 200; i++) {
+                    hexText += hexValues[Math.floor(Math.random() * hexValues.length)];
+                    if (i % 40 === 0 && i !== 0) hexText += '\n';
+                }
+                hexCode.textContent = hexText;
+                counter++;
+                
+                if (counter > 20) {
+                    clearInterval(interval);
+                }
+            }, 100);
+            
+            setTimeout(() => {
+                animation.classList.remove('active');
+                clearInterval(interval);
+            }, 3000);
+            
+            return true;
+        }
+
+        // Helper function to update the cursor position
+        function updateCursor() {
+            const terminalOutput = document.getElementById('terminal-output');
+            const lines = terminalOutput.querySelectorAll('.terminal-line');
+            
+            // Remove existing cursors
+            const existingCursors = terminalOutput.querySelectorAll('.cursor');
+            existingCursors.forEach(cursor => cursor.remove());
+            
+            // Add cursor to the last line
+            if (lines.length > 0) {
+                const lastLine = lines[lines.length - 1];
+                const cursor = document.createElement('span');
+                cursor.className = 'cursor';
+                lastLine.appendChild(cursor);
+            }
+        }
+
+        function addTerminalLine(text, fast = false) {
+            if (!isPremiumUser) return;
+            
+            const terminalOutput = document.getElementById('terminal-output');
+            const line = document.createElement('div');
+            line.className = 'terminal-line';
+            if (fast) line.classList.add('fast-scroll');
+            line.textContent = text;
+            terminalOutput.appendChild(line);
+            
+            // Update the cursor position
+            updateCursor();
+            
+            // Scroll to bottom
+            terminalOutput.scrollTop = terminalOutput.scrollHeight;
+        }
+
+        function clampSignalCount(count) {
+            return Math.min(10, Math.max(1, count));
+        }
+
+        function handleGenerateSignals() {
+            if (!isPremiumUser) {
+                toastr.error("Premium access required to generate signals");
+                return;
+            }
+            
+            const copySignalsButton = document.getElementById('copy-signals');
+            const selectedAsset = document.getElementById('asset-select').value;
+            let signalCount = Number(document.getElementById('signal-count').value);
+            const filter = document.getElementById('filter-select').value;
+            const errorMessage = document.getElementById('error-message');
+            
+            // Clamp signal count to 1-10 range
+            signalCount = clampSignalCount(signalCount);
+            document.getElementById('signal-count').value = signalCount;
+            
+            addTerminalLine("> INITIATING SIGNAL GENERATION SEQUENCE...");
+            addTerminalLine(`> REQUESTED SIGNALS: ${signalCount}`);
+            copySignalsButton.style.display = 'flex';
+
+            if (!selectedAsset) {
+                errorMessage.textContent = 'ERROR: PLEASE SELECT AN ASSET BEFORE GENERATING SIGNALS!';
+                errorMessage.style.display = 'block';
+                
+                setTimeout(() => {
+                    addTerminalLine("> ERROR: NO ASSET SELECTED!");
+                    addTerminalLine("> ABORTING OPERATION");
+                }, 1000);
+                return;
+            }
+
+            errorMessage.style.display = 'none';
+            if (!showHackingAnimation()) return;
+            
+            setTimeout(() => {
+                addTerminalLine("> BYPASSING SECURITY PROTOCOLS...", true);
+            }, 500);
+            
+            setTimeout(() => {
+                addTerminalLine("> ACCESSING FINANCIAL NETWORK...", true);
+            }, 1000);
+            
+            setTimeout(() => {
+                addTerminalLine("> CONNECTING TO METAQUID AI...", true);
+            }, 1500);
+            
+            setTimeout(() => {
+                addTerminalLine("> ANALYZING MARKET TRENDS WITH AI...", true);
+            }, 2000);
+            
+            setTimeout(() => {
+                addTerminalLine("> GENERATING AI-POWERED SIGNALS...", true);
+                
+                const newSignals = [];
+                let nextTime = new Date(); // current time
+                
+                for (let i = 0; i < signalCount; i++) {
+                    // Move to the next 5-minute interval
+                    nextTime.setMinutes(nextTime.getMinutes() + 5);
+                    const timeStr = formatTime(nextTime);
+                    const newSignal = generateAISignal(selectedAsset, timeStr);
+                    newSignals.push(newSignal);
+                }
+                
+                // Add new signals to the global list
+                signals.push(...newSignals);
+                applyFilter();
+                
+                // Update terminal with generation results
+                setTimeout(() => {
+                    addTerminalLine(`> SUCCESS! GENERATED ${signalCount} AI-POWERED SIGNALS`);
+                    addTerminalLine("> SIGNAL DUPLICATION PROTECTION: ACTIVE");
+                    addTerminalLine("> READY FOR DEPLOYMENT");
+                }, 500);
+            }, 2500);
+        }
+        
+        function applyFilter() {
+            if (!isPremiumUser) return;
+            
+            const filter = document.getElementById('filter-select').value;
+            const filteredSignals = filter === 'ALL' ? signals : 
+                signals.filter(signal => signal.direction === filter);
+            displaySignals(filteredSignals);
+        }
+
+        function displaySignals(signalsToDisplay) {
+            if (!isPremiumUser) return;
+            
+            const signalList = document.getElementById('signal-list');
+            signalList.innerHTML = "";
+            
+            if (signalsToDisplay.length === 0) {
+                signalList.innerHTML = '<li>No signals generated</li>';
+                return;
+            }
+            
+            signalsToDisplay.forEach(signal => {
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `
+                    <i class="fas fa-satellite"></i>
+                    <span>${signal.asset} ➪ ${signal.time}</span>
+                    <span class="signal-direction ${signal.direction === 'CALL' ? 'call' : 'put'}">
+                        ${signal.direction}
+                    </span>
+                `;
+                signalList.appendChild(listItem);
+            });
+            
+            window.generatedSignals = signalsToDisplay;
+        }
+
+        function handleCopySignals() {
+            if (!isPremiumUser) {
+                toastr.error("Premium access required to copy signals");
+                return;
+            }
+            
+            if (!window.generatedSignals || window.generatedSignals.length === 0) {
+                toastr.error("No signals to copy!");
+                return;
+            }
+            
+            addTerminalLine("> INITIATING SIGNAL EXPORT...");
+            
+            const today = new Date();
+            const formattedDate = `${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear()}`;
+            
+            const signalsText = window.generatedSignals.map(signal => 
+                `⏱ ${signal.time} - ${signal.asset} - ${signal.direction === 'CALL' ? '📈 CALL' : '📉 PUT'}`
+            ).join('\n');
+            
+            const fullFormat = `
+⚡️ *QUOTEX SIGNALS - METAQUID AI TERMINAL* ⚡️
+📅 Date: ${formattedDate}
+🕒 Timezone: Asia/Dhaka (GMT+6)
+🤖 Generated by MetaQuid AI
+
+====== SIGNALS ======
+${signalsText}
+=====================
+
+🔒 *ENCRYPTED SECURE CHANNEL*
+⚠️ Use within 5 minutes of generation
+✅ 95% Backtested Accuracy
+
+🔥 Generated by Quotex Hacking Terminal
+`;
+            
+            // Create a temporary textarea to copy text
+            const textArea = document.createElement('textarea');
+            textArea.value = fullFormat;
+            document.body.appendChild(textArea);
+            textArea.select();
+            
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    toastr.success("SIGNALS COPIED TO CLIPBOARD!");
+                    addTerminalLine("> SIGNALS COPIED TO CLIPBOARD");
+                    addTerminalLine("> OPERATION COMPLETE");
+                } else {
+                    toastr.error("ERROR COPYING SIGNALS");
+                    addTerminalLine("> ERROR: COPY OPERATION FAILED");
+                }
+            } catch (err) {
+                toastr.error("ERROR COPYING SIGNALS", err);
+                addTerminalLine("> ERROR: COPY OPERATION FAILED");
+            }
+            
+            document.body.removeChild(textArea);
+        }
+
+        function handleResetSignals() {
+            if (!isPremiumUser) {
+                toastr.error("Premium access required to reset signals");
+                return;
+            }
+            
+            // Reset all form elements
+            document.getElementById('asset-select').selectedIndex = 0;
+            document.getElementById('signal-count').value = 10;
+            document.getElementById('filter-select').selectedIndex = 0;
+            document.getElementById('backtest-filter').checked = true;
+            
+            // Clear signals
+            signals = [];
+            document.getElementById('signal-list').innerHTML = '<li>No signals generated</li>';
+            document.getElementById('copy-signals').style.display = 'none';
+            document.getElementById('error-message').style.display = 'none';
+            
+            // Reset terminal
+            const terminalOutput = document.getElementById('terminal-output');
+            terminalOutput.innerHTML = `
+                <div class="terminal-line">> SYSTEM RESET IN PROGRESS...</div>
+                <div class="terminal-line">> CLEARING SIGNAL CACHE...</div>
+                <div class="terminal-line">> RESETTING AI MODEL...</div>
+                <div class="terminal-line">> SIGNAL COUNT SET TO DEFAULT: 10</div>
+                <div class="terminal-line">> SYSTEM RESET COMPLETE</div>
+                <div class="terminal-line">> METAQUID AI READY FOR NEW OPERATION</div>
+            `;
+            
+            // Update cursor position after reset
+            updateCursor();
+        }
+
+        // Set Dhaka timezone
+        function updateDateTime() {
+            const now = new Date();
+            const options = { 
+                timeZone: 'Asia/Dhaka',
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false // 24-hour format
+            };
+            
+            // Get combined date/time string
+            const dateTimeStr = now.toLocaleString('en-GB', options);
+            document.getElementById('current-datetime').textContent = dateTimeStr;
+        }
+
+        // Initialize asset dropdown
+        if (isPremiumUser) {
+            const assetSelect = document.getElementById('asset-select');
+            availableAssets.forEach(asset => {
+                const option = document.createElement('option');
+                option.value = asset;
+                option.textContent = asset;
+                assetSelect.appendChild(option);
+            });
+
+            // Event listeners
+            document.getElementById('generate-signals').addEventListener('click', handleGenerateSignals);
+            document.getElementById('reset-signals').addEventListener('click', handleResetSignals);
+            document.getElementById('copy-signals').addEventListener('click', handleCopySignals);
+            document.getElementById('filter-select').addEventListener('change', applyFilter);
+            
+            // Input validation
+            document.getElementById('signal-count').addEventListener('input', function() {
+                // Allow only numbers and empty string
+                this.value = this.value.replace(/[^0-9]/g, '');
+                
+                // Clamp value to 1-10 range
+                if (this.value !== '') {
+                    let value = parseInt(this.value);
+                    if (value < 1) value = 1;
+                    if (value > 10) value = 10;
+                    this.value = value;
+                }
+            });
+
+            // Prevent non-numeric input
+            document.getElementById('signal-count').addEventListener('keydown', function(e) {
+                // Allow: backspace, delete, tab, escape, enter
+                if ([46, 8, 9, 27, 13].includes(e.keyCode) || 
+                    // Allow: Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+                    (e.keyCode === 65 && e.ctrlKey === true) || 
+                    (e.keyCode === 67 && e.ctrlKey === true) || 
+                    (e.keyCode === 86 && e.ctrlKey === true) || 
+                    (e.keyCode === 88 && e.ctrlKey === true) ||
+                    // Allow: home, end, left, right
+                    (e.keyCode >= 35 && e.keyCode <= 39)) {
+                    return;
+                }
+                
+                // Prevent if not a number
+                if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                    e.preventDefault();
+                }
+            });
+
+            // Initialize date/time
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+            
+            // Initialize cursor position
+            setTimeout(() => {
+                updateCursor();
+            }, 100);
+            
+            // Initialize Toastr
+            toastr.options = {
+                positionClass: "toast-bottom-right",
+                progressBar: true,
+                timeOut: 3000,
+                hideDuration: 300,
+                extendedTimeOut: 600,
+                closeButton: true,
+                preventDuplicates: true
+            };
+            
+            // Add random terminal messages
+            setInterval(() => {
+                const messages = [
+                    "> SCANNING NETWORK FOR THREATS...",
+                    "> ENCRYPTION: AES-256 ACTIVE",
+                    "> MONITORING FINANCIAL MARKETS...",
+                    "> SECURITY PROTOCOLS: NOMINAL",
+                    "> METAQUID AI: OPTIMIZING MODELS...",
+                    "> CONNECTION: SECURE",
+                    "> SIGNAL GENERATOR: STANDBY",
+                    "> AI PREDICTION ACCURACY: 95.7%",
+                    "> SIGNAL DUPLICATION: PROTECTED"
+                ];
+                
+                if (Math.random() > 0.7) {
+                    addTerminalLine(messages[Math.floor(Math.random() * messages.length)]);
+                }
+            }, 8000);
+        }
+    </script>
+</body>
+</html>
